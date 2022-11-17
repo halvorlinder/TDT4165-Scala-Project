@@ -24,6 +24,7 @@
   t4.join()
   t5.join()
 
+// call with n = 50 to get the list 
 def array(n : Int ) : Array[Int] = {
   (for (i <- 1 to n) yield i).toArray
 }
@@ -81,5 +82,6 @@ object Concurrency
     counter = 0
   }
 }
+
 object A { lazy val x: Int = B.y }
 object B { lazy val y: Int = A.x }

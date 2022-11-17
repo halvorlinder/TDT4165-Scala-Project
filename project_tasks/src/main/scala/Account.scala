@@ -9,9 +9,29 @@ class Account(val bank: Bank, initialBalance: Double) {
     // TODO
     // for project task 1.2: implement functions
     // for project task 1.3: change return type and update function bodies
-    def withdraw(amount: Double): Unit = ???
-    def deposit (amount: Double): Unit = ???
-    def getBalanceAmount: Double       = ???
+    def withdraw(amount: Double): Either[Double, Either[ NoSufficientFundsException , IllegalAmountException]] = this.balance.synchronized{
+        if(this.balance.amount - amount < 0 ){
+            return Right(Left(new NoSufficientFundsException()))
+        }
+        else if(amount < 0){
+            return Right(Right(new IllegalAmountException()))
+        }
+        else{
+            this.balance.amount = this.balance.amount - amount
+            return Left(amount)
+        }
+    }
+    def deposit (amount: Double): Either[Double, IllegalAmountException] = this.balance.synchronized{
+        if (amount > 0){
+            this.balance.amount = this.balance.amount + amount
+            Left(amount)
+        }
+        else{
+            Right(new IllegalAmountException())
+        }
+    }
+
+    def getBalanceAmount: Double = this.balance.synchronized{this.balance.amount}
 
     def transferTo(account: Account, amount: Double) = {
         bank addTransactionToQueue (this, account, amount)
