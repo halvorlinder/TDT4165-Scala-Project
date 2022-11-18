@@ -144,6 +144,7 @@ class AccountTransferTests extends FunSuite {
     second.join()
 
     while (bank.getProcessedTransactionsAsList.size != 200) {
+      println(bank.getProcessedTransactionsAsList.size)
       Thread.sleep(100)
     }
 
